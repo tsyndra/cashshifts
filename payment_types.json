@@ -1,0 +1,413 @@
+{
+    "correlationId": "5724145d-9a83-4d05-b426-357f76642937",
+    "paymentTypes": [
+        {
+            "id": "049150f4-bd5c-46f1-ad4b-38f26cf3ad5a",
+            "code": "BCB",
+            "name": "Бонусы кешбек",
+            "comment": "",
+            "combinable": true,
+            "externalRevision": 1201310,
+            "applicableMarketingCampaigns": [
+                "4df13b9e-e49f-4a80-a97d-462ebe6c1d50"
+            ],
+            "isDeleted": false,
+            "printCheque": false,
+            "paymentProcessingType": "Internal",
+            "paymentTypeKind": "IikoCard",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "09322f46-578a-d210-add7-eec222a08871",
+            "code": "CASH",
+            "name": "НАЛИЧНЫЕ",
+            "comment": "настроен",
+            "combinable": true,
+            "externalRevision": 1723495,
+            "applicableMarketingCampaigns": [],
+            "isDeleted": false,
+            "printCheque": true,
+            "paymentProcessingType": "Both",
+            "paymentTypeKind": "Cash",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "0c5414d3-0b92-4446-9a82-d11b89e41929",
+            "code": "ZAGL",
+            "name": "Корректировка",
+            "comment": "",
+            "combinable": true,
+            "externalRevision": 29,
+            "applicableMarketingCampaigns": [],
+            "isDeleted": false,
+            "printCheque": true,
+            "paymentProcessingType": "Both",
+            "paymentTypeKind": "Card",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "1a0470b5-a215-4db6-bf4f-4585ab7e4ccf",
+            "code": "BON",
+            "name": "Бонусы iikocard5",
+            "comment": "",
+            "combinable": true,
+            "externalRevision": 1208144,
+            "applicableMarketingCampaigns": [
+                "b6138b14-4eb5-11e8-80cd-d8d385655247"
+            ],
+            "isDeleted": true,
+            "printCheque": false,
+            "paymentProcessingType": "Internal",
+            "paymentTypeKind": "IikoCard",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "1a72341b-be7c-4c12-8459-74cebd886522",
+            "code": "BDR",
+            "name": "Бонусы ДР",
+            "comment": "",
+            "combinable": true,
+            "externalRevision": 1208327,
+            "applicableMarketingCampaigns": [
+                "d0d04e7c-8ddf-474c-8f3b-435bd3c455ac"
+            ],
+            "isDeleted": false,
+            "printCheque": false,
+            "paymentProcessingType": "Internal",
+            "paymentTypeKind": "IikoCard",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "22678826-009c-485c-92a6-57b5432c5e6a",
+            "code": "DCV",
+            "name": "Деливери \"В\"",
+            "comment": "",
+            "combinable": true,
+            "externalRevision": 67018,
+            "applicableMarketingCampaigns": [],
+            "isDeleted": false,
+            "printCheque": false,
+            "paymentProcessingType": "Both",
+            "paymentTypeKind": "Card",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "2e7ed8fd-9838-4186-9fa0-4ab07116c976",
+            "code": "YEV",
+            "name": "Яндекс \"В\"",
+            "comment": "",
+            "combinable": true,
+            "externalRevision": 310296,
+            "applicableMarketingCampaigns": [],
+            "isDeleted": false,
+            "printCheque": false,
+            "paymentProcessingType": "Both",
+            "paymentTypeKind": "Card",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "4636e9d6-2863-4bdb-bfc9-1d8f4a99e249",
+            "code": "BKM",
+            "name": "Бонусы компенсация",
+            "comment": "",
+            "combinable": true,
+            "externalRevision": 1205334,
+            "applicableMarketingCampaigns": [
+                "27cb8f02-ada8-4af0-8c8f-c4fdb9433186"
+            ],
+            "isDeleted": false,
+            "printCheque": false,
+            "paymentProcessingType": "Internal",
+            "paymentTypeKind": "IikoCard",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "4995c388-2f09-4c35-a9f1-3f5dbb001b48",
+            "code": "OOD",
+            "name": "ОНЛАЙН Маркет Деливери",
+            "comment": "",
+            "combinable": true,
+            "externalRevision": 2523866,
+            "applicableMarketingCampaigns": [],
+            "isDeleted": false,
+            "printCheque": false,
+            "paymentProcessingType": "Both",
+            "paymentTypeKind": "Card",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "5ea9b01a-a5d2-4650-b53b-c72162371312",
+            "code": "YA",
+            "name": "YandexQR",
+            "comment": "",
+            "combinable": true,
+            "externalRevision": 1090981,
+            "applicableMarketingCampaigns": [],
+            "isDeleted": false,
+            "printCheque": true,
+            "paymentProcessingType": "Both",
+            "paymentTypeKind": "Card",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "760ca9b9-4826-4aaa-b692-bcb57a3ba308",
+            "code": "SBP",
+            "name": "Оплачено онлайн СБП",
+            "comment": "",
+            "combinable": true,
+            "externalRevision": 96599,
+            "applicableMarketingCampaigns": [],
+            "isDeleted": false,
+            "printCheque": true,
+            "paymentProcessingType": "Both",
+            "paymentTypeKind": "Card",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "9cd5d67a-89b4-ab69-1365-7b8c51865a90",
+            "code": "BANK",
+            "name": "БАНКОВСКИЕ КАРТЫ",
+            "comment": "настроен",
+            "combinable": true,
+            "externalRevision": 29,
+            "applicableMarketingCampaigns": [],
+            "isDeleted": false,
+            "printCheque": true,
+            "paymentProcessingType": "Both",
+            "paymentTypeKind": "Card",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "b42c35c9-a4f7-4fd0-8052-de588f915213",
+            "code": "OO",
+            "name": "Оплачено онлайн",
+            "comment": "",
+            "combinable": true,
+            "externalRevision": 29,
+            "applicableMarketingCampaigns": [],
+            "isDeleted": false,
+            "printCheque": true,
+            "paymentProcessingType": "Both",
+            "paymentTypeKind": "Card",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "bd76589b-8294-40e6-afea-7b7ab23a99b4",
+            "code": "SBM",
+            "name": "ОНЛАЙН Купер",
+            "comment": "",
+            "combinable": true,
+            "externalRevision": 2523866,
+            "applicableMarketingCampaigns": [],
+            "isDeleted": false,
+            "printCheque": false,
+            "paymentProcessingType": "Both",
+            "paymentTypeKind": "Card",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "de5d3000-d97d-4c4a-8ced-b4f75607ec1b",
+            "code": "ODN",
+            "name": "ОНЛАЙН Яндекс еда",
+            "comment": "",
+            "combinable": true,
+            "externalRevision": 29,
+            "applicableMarketingCampaigns": [],
+            "isDeleted": false,
+            "printCheque": false,
+            "paymentProcessingType": "Both",
+            "paymentTypeKind": "Card",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "ed0be1c9-5488-405b-a53a-66e560d65a23",
+            "code": "BON2",
+            "name": "Бонусы сайт/приложение",
+            "comment": "Не удалять, на нем пашет система депозитов",
+            "combinable": true,
+            "externalRevision": 1208144,
+            "applicableMarketingCampaigns": [
+                "03650000-6bec-ac1f-d9f0-08da61a5364a"
+            ],
+            "isDeleted": true,
+            "printCheque": false,
+            "paymentProcessingType": "Internal",
+            "paymentTypeKind": "IikoCard",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "ef823cee-1587-45ad-a48e-815bacea3c10",
+            "code": "YP",
+            "name": "Yandex Pay",
+            "comment": "",
+            "combinable": true,
+            "externalRevision": 154287,
+            "applicableMarketingCampaigns": [],
+            "isDeleted": false,
+            "printCheque": true,
+            "paymentProcessingType": "External",
+            "paymentTypeKind": "Card",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        },
+        {
+            "id": "f34a35f8-015c-46a4-8a45-25fc258f6773",
+            "code": "BGF",
+            "name": "Бонусы подарок",
+            "comment": "",
+            "combinable": true,
+            "externalRevision": 1201310,
+            "applicableMarketingCampaigns": [
+                "e1130461-060a-495c-ad6c-6f481982a388"
+            ],
+            "isDeleted": false,
+            "printCheque": false,
+            "paymentProcessingType": "Internal",
+            "paymentTypeKind": "IikoCard",
+            "terminalGroups": [
+                {
+                    "id": "acb0a674-f07a-4a19-bdbf-da640d69d978",
+                    "organizationId": "2ab952cb-b906-44aa-8563-c78a11d91c43",
+                    "name": "Хатимаки Ватутинки",
+                    "address": "",
+                    "timeZone": "03:00:00"
+                }
+            ]
+        }
+    ]
+}
