@@ -92,6 +92,11 @@ function loadCashShiftData() {
         data: { branch_id: branchId },
         success: function(data) {
             hideLoading();
+            console.log('=== ОТЛАДКА API ОТВЕТА ===');
+            console.log('Полный ответ:', data);
+            console.log('Тип данных:', typeof data);
+            console.log('Ключи в данных:', Object.keys(data));
+            
             cashShiftData = data.payments;
             $('#cashShiftCount').text(cashShiftData.length);
             $('#cashShiftInfo').show();
@@ -100,12 +105,16 @@ function loadCashShiftData() {
             $('#cashShiftInfo .alert-info:not(:first)').remove();
             
             // Отображаем статистику по типам операций
-            console.log('Данные получены:', data);
+            console.log('operationStats в данных:', data.operationStats);
+            console.log('totalOperations в данных:', data.totalOperations);
+            console.log('totalSum в данных:', data.totalSum);
+            
             if (data.operationStats) {
                 console.log('Статистика операций:', data.operationStats);
                 displayOperationStats(data.operationStats, data.totalOperations, data.totalSum);
             } else {
-                console.log('Статистика операций не найдена в ответе');
+                console.log('❌ Статистика операций не найдена в ответе!');
+                console.log('Доступные ключи:', Object.keys(data));
             }
             
             checkCompareButton();
