@@ -343,6 +343,12 @@ def api_cash_shift_payments(session_id):
         logger.info(f"Найдено операций: cashless={cashless_count}, payin={payin_count}, payout={payout_count}")
         logger.info(f"Обрабатываем только безналичные операции: {cashless_count} (внесения и выдачи исключены)")
         
+        # Исключаем внесения и выдачи из обработки
+        if payin_count > 0:
+            logger.info(f"ИСКЛЮЧАЕМ {payin_count} операций внесения наличных из отчета")
+        if payout_count > 0:
+            logger.info(f"ИСКЛЮЧАЕМ {payout_count} операций выдачи наличных из отчета")
+        
         # Обрабатываем только безналичные операции
         for record in cashless_records:
             payment_type_id = record.get("paymentTypeId")
@@ -406,6 +412,10 @@ def api_cash_shift_payments(session_id):
                 logger.error(f"Ошибка обработки даты {raw_date}: {e}")
                 formatted_date = raw_date  # Оставляем как есть
             
+            # Правильно обрабатываем статус платежа
+            raw_status = record["status"]
+            status_text = "Принят" if raw_status == "ACCEPTED" else raw_status
+            
             processed_payment = {
                 "id": record["info"]["id"],
                 "date": formatted_date,
@@ -415,7 +425,8 @@ def api_cash_shift_payments(session_id):
                 "operationType": operation_type,  # Добавляем тип операции (cashless/payin/payout)
                 "actualSum": actual_sum,  # В рублях
                 "originalSum": record["originalSum"],
-                "status": record["status"],
+                "status": raw_status,  # Оригинальный статус из API
+                "statusText": status_text,  # Человекочитаемый статус
                 "type": record["info"]["type"],
                 "cashierId": record["info"]["cashierId"],
                 "comment": record["info"].get("comment", "")  # Добавляем комментарий для внесений/выдач

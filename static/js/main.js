@@ -261,27 +261,27 @@ function displayComparisonResults(response) {
     const tbody = $('#comparisonTable tbody');
     tbody.empty();
     
-    comparison.forEach(item => {
-        const statusBadge = item.status === 'match' 
-            ? '<span class="badge bg-success">Совпадение</span>' 
-            : '<span class="badge bg-danger">Несовпадение</span>';
-        
-        const typeLabel = item.type === 'matched' ? '' :
-            item.type === 'cash_only' ? '<span class="badge bg-warning">Только в кассе</span>' :
-            '<span class="badge bg-danger">Только в банке</span>';
-        
-        tbody.append(`
-            <tr class="${item.status === 'match' ? '' : 'table-warning'}">
-                <td>${item.paymentType} ${typeLabel}</td>
-                <td>${item.cashAmount.toFixed(2)} ₽</td>
-                <td>${item.bankAmount.toFixed(2)} ₽</td>
-                <td class="${item.difference === 0 ? 'text-success' : 'text-danger'}">
-                    ${item.difference.toFixed(2)} ₽
-                </td>
-                <td>${statusBadge}</td>
-            </tr>
-        `);
-    });
+        comparison.forEach(item => {
+            const statusBadge = item.status === 'match' 
+                ? '<span class="badge bg-success">Совпадение</span>' 
+                : '<span class="badge bg-warning">Несовпадение</span>';
+            
+            const typeLabel = item.type === 'matched' ? '' :
+                item.type === 'cash_only' ? '<span class="badge bg-info">Только в кассе</span>' :
+                '<span class="badge bg-secondary">Только в банке</span>';
+            
+            tbody.append(`
+                <tr class="${item.status === 'match' ? '' : 'table-warning'}">
+                    <td>${item.paymentType} ${typeLabel}</td>
+                    <td>${item.cashAmount.toFixed(2)} ₽</td>
+                    <td>${item.bankAmount.toFixed(2)} ₽</td>
+                    <td class="${item.difference === 0 ? 'text-success' : 'text-danger'}">
+                        ${item.difference.toFixed(2)} ₽
+                    </td>
+                    <td>${statusBadge}</td>
+                </tr>
+            `);
+        });
     
     $('#comparisonResults').show();
     $('html, body').animate({
