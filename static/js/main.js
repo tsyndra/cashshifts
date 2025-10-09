@@ -95,6 +95,10 @@ function loadCashShiftData() {
             cashShiftData = data.payments;
             $('#cashShiftCount').text(cashShiftData.length);
             $('#cashShiftInfo').show();
+            
+            // Отображаем статистику по типам операций
+            displayOperationStats(data.operationStats, data.totalOperations, data.totalSum);
+            
             checkCompareButton();
             showSuccess(`Загружено ${cashShiftData.length} операций`);
         },
@@ -303,5 +307,41 @@ function showError(message) {
 
 function showSuccess(message) {
     console.log('Успех: ' + message);
+}
+
+function displayOperationStats(operationStats, totalOperations, totalSum) {
+    let statsHtml = `
+        <div class="alert alert-info mt-3">
+            <h6><strong>Статистика по типам операций:</strong></h6>
+            <div class="row">
+    `;
+    
+    // Отображаем статистику для каждого типа операции
+    Object.entries(operationStats).forEach(([paymentType, stats]) => {
+        statsHtml += `
+            <div class="col-md-6 mb-2">
+                <strong>${paymentType}:</strong> ${stats.count} операций, 
+                <span class="text-primary">${stats.sum.toFixed(2)} ₽</span>
+            </div>
+        `;
+    });
+    
+    statsHtml += `
+            </div>
+            <hr>
+            <div class="row">
+                <div class="col-md-6">
+                    <strong>Всего операций:</strong> ${totalOperations}
+                </div>
+                <div class="col-md-6">
+                    <strong>Общая сумма:</strong> 
+                    <span class="text-success">${totalSum.toFixed(2)} ₽</span>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    // Добавляем статистику в информационный блок
+    $('#cashShiftInfo').append(statsHtml);
 }
 

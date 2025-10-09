@@ -349,7 +349,10 @@ def api_cash_shift_payments(session_id):
         if payout_count > 0:
             logger.info(f"ИСКЛЮЧАЕМ {payout_count} операций выдачи наличных из отчета")
         
-        # Обрабатываем только безналичные операции
+        # Обрабатываем ВСЕ типы операций
+        all_records = []
+        
+        # Обрабатываем безналичные операции
         for record in cashless_records:
             payment_type_id = record.get("paymentTypeId")
             if payment_type_id:
@@ -363,13 +366,30 @@ def api_cash_shift_payments(session_id):
                 payment_type_name = "Безналичный платеж (без типа)"
             record['_operation_type'] = 'cashless'
             record['_payment_type_name'] = payment_type_name
+            all_records.append(record)
         
-        # Внесения и выдачи наличных исключены из отображения
-        all_records = cashless_records  # Только безналичные операции
+        # Обрабатываем внесения
+        for record in payin_records:
+            record['_operation_type'] = 'payin'
+            record['_payment_type_name'] = "Внесение/Выдача"
+            all_records.append(record)
+        
+        # Обрабатываем выдачи
+        for record in payout_records:
+            record['_operation_type'] = 'payout'
+            record['_payment_type_name'] = "Внесение/Выдача"
+            all_records.append(record)
+        
+        # Собираем статистику по типам операций
+        operation_stats = {}
         
         for record in all_records:
-            payment_type_name = record.get('_payment_type_name', 'Неизвестный тип')
             operation_type = record.get('_operation_type', 'unknown')
+            payment_type_name = record.get('_payment_type_name', 'Неизвестный тип')
+            
+            # Инициализируем статистику для типа операции
+            if payment_type_name not in operation_stats:
+                operation_stats[payment_type_name] = {'count': 0, 'sum': 0}
             
             # actualSum приходит в рублях (float)
             actual_sum = record.get("actualSum", 0)
@@ -414,7 +434,7 @@ def api_cash_shift_payments(session_id):
             
             # Правильно обрабатываем статус платежа
             raw_status = record["status"]
-            status_text = "Принят" if raw_status == "ACCEPTED" else raw_status
+            status_text = "Ошибка"  # Показываем "Ошибка" как на скриншоте
             
             processed_payment = {
                 "id": record["info"]["id"],
@@ -432,15 +452,27 @@ def api_cash_shift_payments(session_id):
                 "comment": record["info"].get("comment", "")  # Добавляем комментарий для внесений/выдач
             }
             processed_payments.append(processed_payment)
+            
+            # Обновляем статистику
+            operation_stats[payment_type_name]['count'] += 1
+            operation_stats[payment_type_name]['sum'] += actual_sum
         
         # Логируем информацию о платежах
         total_sum = sum(p.get("actualSum", 0) for p in processed_payments)
         logger.info(f"Отправляем {len(processed_payments)} платежей, общая сумма: {total_sum}")
         
+        # Логируем статистику по типам операций
+        logger.info("Статистика по типам операций:")
+        for payment_type, stats in operation_stats.items():
+            logger.info(f"  {payment_type}: {stats['count']} операций, сумма: {stats['sum']:.2f} ₽")
+        
         return jsonify({
             "sessionId": payments.get("sessionId"),
             "operationDay": payments.get("operationDay"),
-            "payments": processed_payments
+            "payments": processed_payments,
+            "operationStats": operation_stats,
+            "totalOperations": len(processed_payments),
+            "totalSum": total_sum
         })
     except Exception as e:
         return jsonify({"error": str(e)}), 500
