@@ -96,8 +96,17 @@ function loadCashShiftData() {
             $('#cashShiftCount').text(cashShiftData.length);
             $('#cashShiftInfo').show();
             
+            // Очищаем предыдущую статистику
+            $('#cashShiftInfo .alert-info:last').remove();
+            
             // Отображаем статистику по типам операций
-            displayOperationStats(data.operationStats, data.totalOperations, data.totalSum);
+            console.log('Данные получены:', data);
+            if (data.operationStats) {
+                console.log('Статистика операций:', data.operationStats);
+                displayOperationStats(data.operationStats, data.totalOperations, data.totalSum);
+            } else {
+                console.log('Статистика операций не найдена в ответе');
+            }
             
             checkCompareButton();
             showSuccess(`Загружено ${cashShiftData.length} операций`);
