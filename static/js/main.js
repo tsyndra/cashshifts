@@ -96,8 +96,8 @@ function loadCashShiftData() {
             $('#cashShiftCount').text(cashShiftData.length);
             $('#cashShiftInfo').show();
             
-            // Очищаем предыдущую статистику
-            $('#cashShiftInfo .alert-info:last').remove();
+            // Очищаем предыдущую статистику (кроме первого блока с количеством операций)
+            $('#cashShiftInfo .alert-info:not(:first)').remove();
             
             // Отображаем статистику по типам операций
             console.log('Данные получены:', data);
@@ -319,6 +319,12 @@ function showSuccess(message) {
 }
 
 function displayOperationStats(operationStats, totalOperations, totalSum) {
+    console.log('displayOperationStats вызвана с данными:', {
+        operationStats: operationStats,
+        totalOperations: totalOperations,
+        totalSum: totalSum
+    });
+    
     let statsHtml = `
         <div class="alert alert-info mt-3">
             <h6><strong>Статистика по типам операций:</strong></h6>
@@ -352,5 +358,6 @@ function displayOperationStats(operationStats, totalOperations, totalSum) {
     
     // Добавляем статистику в информационный блок
     $('#cashShiftInfo').append(statsHtml);
+    console.log('Статистика добавлена в DOM. HTML:', statsHtml);
 }
 
