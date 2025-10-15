@@ -114,7 +114,7 @@ function loadCashShiftData() {
             
             cashShiftData = data.payments;
             $('#cashShiftCount').text(cashShiftData.length);
-            $('#cashShiftInfo').fadeIn('fast');
+            $('#cashShiftInfo').removeClass('d-none').addClass('d-block');
             
             // Очищаем предыдущую статистику (кроме первого блока с количеством операций)
             $('#cashShiftInfo .alert-info:not(:first)').remove();
@@ -167,23 +167,13 @@ function uploadBankReport() {
         data: formData,
         processData: false,
         contentType: false,
-        // Отключаем системные уведомления о загрузке файлов
-        xhr: function() {
-            var xhr = new window.XMLHttpRequest();
-            xhr.upload.addEventListener("progress", function(evt) {
-                if (evt.lengthComputable) {
-                    // Скрываем системные уведомления
-                }
-            }, false);
-            return xhr;
-        },
         success: function(response) {
             hideLoading();
             bankData = response.data;
             bankColumns = response.columns;
             
             $('#bankReportCount').text(response.rows_count);
-            $('#bankReportInfo').fadeIn('fast');
+            $('#bankReportInfo').removeClass('d-none').addClass('d-block');
             
             // Заполняем селекты для маппинга колонок
             const amountSelect = $('#amountColumn');
@@ -209,7 +199,7 @@ function uploadBankReport() {
             if (typeCol) typeSelect.val(typeCol);
             if (dateCol) dateSelect.val(dateCol);
             
-            $('#columnMapping').fadeIn('fast');
+            $('#columnMapping').removeClass('d-none').addClass('d-block');
             checkCompareButton();
             showSuccess(`Загружено ${response.rows_count} строк из банковского отчета`);
         },
