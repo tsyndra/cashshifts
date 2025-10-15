@@ -10,7 +10,7 @@ import signal
 from playwright.async_api import async_playwright, expect
 
 # Настройки
-BASE_URL = "https://cashshifts.tsyndra.ru"  # Тестируем продакшен
+BASE_URL = "http://localhost:5003"  # Тестируем локально
 ADMIN_USERNAME = "tsyndra"
 ADMIN_PASSWORD = "We5fb2k93s71!"
 

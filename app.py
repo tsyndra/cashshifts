@@ -688,5 +688,5 @@ def compare_data():
 if __name__ == '__main__':
     logger.info("Запуск приложения Cash Shifts")
     logger.info("Авторизация через iiko API - локальная БД пользователей не используется")
-    app.run(debug=False, host='0.0.0.0', port=5003)
+    app.run(debug=False, host='0.0.0.0', port=5004)
 

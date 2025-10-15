@@ -125,8 +125,12 @@ function loadCashShiftData() {
             }
             
             // Создаем таблицу операций
+            console.log('🔍 Проверяем данные для таблицы:', cashShiftData);
             if (cashShiftData && cashShiftData.length > 0) {
+                console.log('✅ Данные есть, создаем таблицу');
                 createOperationsTable(cashShiftData);
+            } else {
+                console.log('❌ Нет данных для таблицы');
             }
             
             checkCompareButton();
@@ -428,7 +432,11 @@ function displayOperationStats(operationStats, totalOperations, totalSum) {
 }
 
 function createOperationsTable(operations) {
+    console.log('🔍 createOperationsTable вызвана с данными:', operations);
+    console.log('🔍 Количество операций:', operations ? operations.length : 'undefined');
+    
     if (!operations || operations.length === 0) {
+        console.log('❌ Нет операций для отображения');
         return;
     }
     
