@@ -539,7 +539,12 @@ function createOperationsTable(operations) {
     
     // Добавляем строки в таблицу
     $('#operationsTableBody').html(rowsHtml);
-    $('#operationsTableContainer').fadeIn('slow');
+    
+    // Принудительно показываем таблицу
+    $('#operationsTableContainer').show().css('display', 'block');
+    $('#operationsTable').show().css('display', 'table');
+    
+    console.log('✅ Таблица создана и показана!');
 }
 
 // Функция для открытия модального окна с детальным отчетом
