@@ -40,7 +40,86 @@ def get_iiko_bearer_token():
         return None
 
 def get_branches():
-    """Получает список всех организаций из iiko API согласно документации"""
+    """Возвращает статический список всех филиалов"""
+    # Статический список всех филиалов с их адресами
+    branches = [
+        {
+            "id": "butovo",
+            "name": "Бутово", 
+            "base_url": "https://dostavka-hatimaki-butovo.iiko.it:443/resto/api"
+        },
+        {
+            "id": "yasenevo",
+            "name": "Ясенево",
+            "base_url": "https://hatimakiyasenevo.iiko.it:443/resto/api"
+        },
+        {
+            "id": "kommunarka", 
+            "name": "Коммунарка",
+            "base_url": "https://dostavka-hatimaki-kommunarka.iiko.it:443/resto/api"
+        },
+        {
+            "id": "podolsk",
+            "name": "Подольск", 
+            "base_url": "https://dostavka-hatimaki-podolsk.iiko.it:443/resto/api"
+        },
+        {
+            "id": "moskovskii",
+            "name": "Московский",
+            "base_url": "https://dostavka-hatimaki-moskovskii.iiko.it:443/resto/api"
+        },
+        {
+            "id": "etalon",
+            "name": "Эталон",
+            "base_url": "https://dostavka-hatimaki-etalon.iiko.it:443/resto/api"
+        },
+        {
+            "id": "bobrovo",
+            "name": "Боброво",
+            "base_url": "https://dostavka-hatimaki-bobrovo.iiko.it:443/resto/api"
+        },
+        {
+            "id": "scherbinka",
+            "name": "Щербинка (Степано)",
+            "base_url": "https://hatimaki-scherbinka-ip-stepano.iiko.it:443/resto/api"
+        },
+        {
+            "id": "monahovo",
+            "name": "Монахово (Тащили)",
+            "base_url": "https://hatimaki-monahovoi-ip-taschili.iiko.it:443/resto/api"
+        },
+        {
+            "id": "40let",
+            "name": "40 лет",
+            "base_url": "https://hatimaki-40-let.iiko.it:443/resto/api"
+        },
+        {
+            "id": "skandinaviya",
+            "name": "Скандинавия",
+            "base_url": "https://hatimaki-skandinaviya.iiko.it:443/resto/api"
+        },
+        {
+            "id": "ispaniya",
+            "name": "Испания", 
+            "base_url": "https://hatimaki-ispaniya.iiko.it:443/resto/api"
+        },
+        {
+            "id": "novovatutinskaya",
+            "name": "Нововатутинская",
+            "base_url": "https://hatimaki-novovatutinskaya.iiko.it:443/resto/api"
+        },
+        {
+            "id": "luchi",
+            "name": "Лучи",
+            "base_url": "https://hatimaki-luchi.iiko.it:443/resto/api"
+        }
+    ]
+    
+    print(f"✅ Возвращаем статический список из {len(branches)} филиалов")
+    return branches
+
+def get_branches_old():
+    """Старая функция получения филиалов через API (не используется)"""
     try:
         # Получаем bearer token
         token = get_iiko_bearer_token()

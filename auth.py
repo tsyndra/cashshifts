@@ -54,16 +54,10 @@ def authenticate_with_iiko(username, password, branch_id=None):
             logger.error("Не удалось получить список филиалов")
             return False, None, "Не удалось получить список филиалов"
         
-        # Если branch_id не указан, берем первый ДОСТУПНЫЙ филиал
+        # Если branch_id не указан, берем первый филиал
         if not branch_id:
-            # Ищем доступный филиал (не Бутово, который недоступен)
-            available_branches = [b for b in branches if b['id'] not in ['butovo', 'yasenevo', 'kommunarka']]
-            if available_branches:
-                branch_id = available_branches[0]['id']
-                logger.info(f"Branch ID не указан, используем первый доступный: {branch_id}")
-            else:
-                branch_id = branches[0]['id']
-                logger.info(f"Branch ID не указан, используем первый: {branch_id}")
+            branch_id = branches[0]['id']
+            logger.info(f"Branch ID не указан, используем первый: {branch_id}")
         
         # Находим данные филиала
         branch_data = next((b for b in branches if b['id'] == branch_id), None)
