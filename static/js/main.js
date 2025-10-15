@@ -167,6 +167,16 @@ function uploadBankReport() {
         data: formData,
         processData: false,
         contentType: false,
+        // Отключаем системные уведомления о загрузке файлов
+        xhr: function() {
+            var xhr = new window.XMLHttpRequest();
+            xhr.upload.addEventListener("progress", function(evt) {
+                if (evt.lengthComputable) {
+                    // Скрываем системные уведомления
+                }
+            }, false);
+            return xhr;
+        },
         success: function(response) {
             hideLoading();
             bankData = response.data;

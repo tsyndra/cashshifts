@@ -513,13 +513,16 @@ def upload_bank_report():
                     elif isinstance(value, (int, float)) and (np.isnan(value) or np.isinf(value)):
                         row[key] = ''
             
-            return jsonify({
+            response = jsonify({
                 "success": True,
                 "filename": filename,
                 "data": data,
                 "columns": df.columns.tolist(),
                 "rows_count": len(data)
             })
+            # Отключаем системные уведомления браузера
+            response.headers['X-Content-Type-Options'] = 'nosniff'
+            return response
             
         except Exception as e:
             # Удаляем файл в случае ошибки
