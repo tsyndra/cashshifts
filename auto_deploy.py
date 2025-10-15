@@ -34,7 +34,7 @@ def run_command(command, cwd=None, capture_output=True):
 def check_app_health():
     """Проверяет доступность приложения"""
     try:
-        response = requests.get('http://localhost:5003/login', timeout=10)
+        response = requests.get('http://localhost:5004/login', timeout=10)
         return response.status_code == 200
     except:
         return False
