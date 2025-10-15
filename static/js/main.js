@@ -443,6 +443,9 @@ function createOperationsTable(operations) {
     // Очищаем tbody
     $('#operationsTableBody').empty();
     
+    // Показываем контейнер таблицы
+    $('#operationsTableContainer').show();
+    
     // Сортируем операции по дате (новые сверху)
     const sortedOperations = operations.sort((a, b) => {
         const dateA = new Date(a.date || a.creationDate || '');
