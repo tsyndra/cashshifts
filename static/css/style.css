@@ -1,44 +1,171 @@
-/* Общие стили */
+/* Cash Shifts - Улучшенные стили */
+
+/* Общие улучшения */
 body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     background-color: #f8f9fa;
 }
 
-/* Навигация */
-.navbar-brand {
-    font-weight: bold;
-    font-size: 1.3rem;
+/* Плавные переходы для всех элементов */
+* {
+    transition: all 0.3s ease;
 }
 
-/* Карточки */
+/* Улучшенные карточки */
 .card {
-    border-radius: 10px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.12);
 }
 
 .card-header {
-    border-radius: 10px 10px 0 0 !important;
-    font-weight: bold;
+    border-radius: 12px 12px 0 0 !important;
+    font-weight: 600;
+    border-bottom: none;
+    padding: 1rem 1.25rem;
 }
 
-/* Таблицы */
-.table {
-    background-color: white;
-}
-
-.table-hover tbody tr:hover {
-    background-color: #f0f8ff;
-}
-
-/* Кнопки */
+/* Улучшенные кнопки */
 .btn {
-    border-radius: 5px;
+    border-radius: 8px;
+    padding: 0.6rem 1.2rem;
+    font-weight: 500;
     transition: all 0.3s ease;
 }
 
 .btn:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.btn:active {
+    transform: translateY(0);
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border: none;
+}
+
+.btn-primary:hover {
+    background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.btn-success {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+    border: none;
+}
+
+.btn-success:hover {
+    background: linear-gradient(135deg, #f5576c 0%, #f093fb 100%);
+}
+
+.btn-warning {
+    background: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
+    border: none;
+    color: #333;
+}
+
+.btn-warning:hover {
+    background: linear-gradient(135deg, #fee140 0%, #fa709a 100%);
+}
+
+.btn-info {
+    background: linear-gradient(135deg, #30cfd0 0%, #330867 100%);
+    border: none;
+}
+
+.btn-info:hover {
+    background: linear-gradient(135deg, #330867 0%, #30cfd0 100%);
+}
+
+/* Улучшенные формы */
+.form-select,
+.form-control {
+    border-radius: 8px;
+    border: 2px solid #e9ecef;
+    padding: 0.6rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-select:focus,
+.form-control:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+}
+
+/* Улучшенные таблицы */
+.table {
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.table thead {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: rgba(0,0,0,.02);
+}
+
+.table-hover tbody tr:hover {
+    background-color: rgba(102, 126, 234, 0.08);
+}
+
+/* Анимация для строк таблицы */
+.animate-row {
+    animation: fadeInUp 0.5s ease;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Улучшенные алерты */
+.alert {
+    border-radius: 10px;
+    border: none;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+}
+
+.alert-info {
+    background: linear-gradient(135deg, #e0f7fa 0%, #b2ebf2 100%);
+    color: #00695c;
+}
+
+.alert-success {
+    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
+    color: #2e7d32;
+}
+
+.alert-warning {
+    background: linear-gradient(135deg, #fff3e0 0%, #ffe0b2 100%);
+    color: #e65100;
+}
+
+.alert-danger {
+    background: linear-gradient(135deg, #ffebee 0%, #ffcdd2 100%);
+    color: #c62828;
+}
+
+/* Badges с улучшенным дизайном */
+.badge {
+    padding: 0.4em 0.8em;
+    border-radius: 20px;
+    font-weight: 500;
 }
 
 /* Спиннер загрузки */
@@ -48,66 +175,147 @@ body {
     left: 50%;
     transform: translate(-50%, -50%);
     z-index: 9999;
-    background-color: rgba(255,255,255,0.9);
-    padding: 30px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+}
+
+.spinner-border {
+    width: 3rem;
+    height: 3rem;
+}
+
+/* Модальные окна */
+.modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.modal-header {
+    border-radius: 12px 12px 0 0;
+    border-bottom: none;
+}
+
+.modal-footer {
+    border-top: none;
+    padding-top: 0;
+}
+
+/* Скроллбар */
+.table-responsive::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-track {
+    background: #f1f1f1;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
 
-/* Результаты сравнения */
-#comparisonResults {
-    animation: fadeIn 0.5s;
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #888;
+    border-radius: 10px;
 }
 
-@keyframes fadeIn {
+.table-responsive::-webkit-scrollbar-thumb:hover {
+    background: #555;
+}
+
+/* Toast уведомления */
+.toast {
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    animation: slideInRight 0.3s ease;
+}
+
+@keyframes slideInRight {
     from {
+        transform: translateX(100%);
         opacity: 0;
-        transform: translateY(20px);
     }
     to {
+        transform: translateX(0);
         opacity: 1;
-        transform: translateY(0);
     }
+}
+
+/* Улучшенный заголовок */
+h2 {
+    font-weight: 700;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+/* Иконки */
+.fas, .far {
+    margin-right: 0.3rem;
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
-    .container-fluid {
-        padding: 10px;
+    .card {
+        margin-bottom: 1rem;
     }
     
     h2 {
         font-size: 1.5rem;
     }
+    
+    .table {
+        font-size: 0.875rem;
+    }
 }
 
-/* Бейджи */
-.badge {
-    padding: 0.4em 0.8em;
-    font-size: 0.85rem;
+/* Sticky header для таблиц */
+.sticky-top {
+    position: sticky;
+    top: 0;
+    z-index: 10;
 }
 
-/* Алерты */
-.alert {
-    border-radius: 8px;
+/* Плавные переходы между секциями */
+.row > div {
+    animation: fadeIn 0.5s ease;
 }
 
-/* Формы */
-.form-control, .form-select {
-    border-radius: 5px;
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
 
-.form-control:focus, .form-select:focus {
-    border-color: #0d6efd;
-    box-shadow: 0 0 0 0.25rem rgba(13,110,253,.25);
+/* Улучшенный дизайн для статистики */
+.card.text-center {
+    transition: all 0.3s ease;
 }
 
-/* Модальные окна */
-.modal-content {
-    border-radius: 10px;
+.card.text-center:hover {
+    transform: scale(1.05);
 }
 
-.modal-header {
-    border-radius: 10px 10px 0 0;
+/* Подсветка активных элементов */
+.form-select:active,
+.form-control:active,
+.btn:active {
+    transform: scale(0.98);
 }
 
+/* Градиентный фон для body */
+body {
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background-attachment: fixed;
+    min-height: 100vh;
+}
+
+/* Улучшенный container */
+.container {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}

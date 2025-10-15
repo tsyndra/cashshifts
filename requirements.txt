@@ -8,4 +8,6 @@ xlrd==2.0.1
 numpy==1.26.2
 Werkzeug==3.0.1
 urllib3==2.1.0
+playwright==1.55.0
+pytest-playwright==0.7.1
 

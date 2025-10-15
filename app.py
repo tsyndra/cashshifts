@@ -5,23 +5,23 @@ import pandas as pd
 from datetime import datetime, timedelta
 import os
 import logging
+import time
 from werkzeug.utils import secure_filename
 import tempfile
 from main import get_auth_token, get_cash_shifts, get_cash_shift_payments, get_branches, get_branch_name
 import requests
 import numpy as np
-from models import db, User, UserBranch
+from auth import User, authenticate_with_iiko, get_token_for_user
 from urllib.parse import urlparse, urljoin
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your-secret-key-here'
+app.config['SECRET_KEY'] = 'your-secret-key-here-change-in-production'
 app.config['UPLOAD_FOLDER'] = 'uploads'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024  # 16MB max file size
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///cash_shifts.db'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+app.config['TEMPLATES_AUTO_RELOAD'] = True
+app.config['SEND_FILE_MAX_AGE_DEFAULT'] = 0
 
-# Инициализация расширений
-db.init_app(app)
+# Инициализация LoginManager
 login_manager = LoginManager()
 login_manager.init_app(app)
 login_manager.login_view = 'login'
@@ -43,80 +43,40 @@ os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    """Загружает пользователя из сессии"""
+    # Проверяем есть ли данные в сессии
+    if 'username' in session and 'password_sha1' in session:
+        if session['username'] == user_id:
+            return User(username=session['username'], password_sha1=session['password_sha1'])
+    return None
 
-def create_admin_user():
-    """Создание администратора по умолчанию"""
-    with app.app_context():
-        db.create_all()
-        admin = User.query.filter_by(username='admin').first()
-        if not admin:
-            admin = User(username='admin', is_admin=True)
-            admin.set_password('CashShifts2024!')
-            db.session.add(admin)
-            db.session.commit()
-            logger.info("Создан администратор по умолчанию: admin/CashShifts2024!")
-            logger.info(f"SHA1 хеш пароля: {admin.get_sha1_password()}")
+# Больше не нужна функция create_admin_user - авторизация через iiko API
 
-def get_user_auth_token(branch_id, user_id=None):
-    """Получение токена аутентификации с учетными данными пользователя"""
+def get_user_auth_token(branch_id):
+    """Получение токена аутентификации с учетными данными текущего пользователя из сессии"""
     try:
-        if not current_user.is_authenticated:
-            logger.error("Пользователь не аутентифицирован")
+        # Получаем данные из сессии
+        if 'username' not in session or 'password_sha1' not in session:
+            logger.error("Нет данных пользователя в сессии")
             return None
         
-        # Получаем данные пользователя
-        user = current_user
-        if user_id:
-            user = User.query.get(user_id)
-            if not user:
-                logger.error(f"Пользователь с ID {user_id} не найден")
-                return None
+        username = session['username']
+        password_sha1 = session['password_sha1']
         
-        # Получаем SHA1 хеш пароля
-        password_sha1 = user.get_sha1_password()
-        if not password_sha1:
-            logger.error(f"SHA1 хеш пароля не найден для пользователя {user.username}")
-            return None
+        logger.info(f"Получение токена для пользователя: {username} в филиале: {branch_id}")
         
-        # Получаем base_url для филиала
-        branches = get_branches()
-        branch_data = next((b for b in branches if b['id'] == branch_id), None)
-        if not branch_data:
-            logger.error(f"Филиал {branch_id} не найден")
-            return None
+        # Используем функцию из auth модуля
+        token = get_token_for_user(username, password_sha1, branch_id)
         
-        base_url = branch_data['base_url']
-        
-        # Формируем URL для получения токена
-        auth_url = f"{base_url}/auth"
-        
-        # Данные для аутентификации (используем формат из main.py)
-        auth_params = {
-            "login": user.username,
-            "pass": password_sha1
-        }
-        
-        logger.info(f"Запрос токена для пользователя {user.username} в филиале {branch_id}")
-        
-        # Отправляем запрос (используем GET с параметрами как в main.py)
-        response = requests.get(auth_url, params=auth_params, verify=False, timeout=30)
-        
-        if response.status_code == 200:
-            # Токен возвращается как текст (как в main.py)
-            token = response.text.strip()
-            if token:
-                logger.info(f"Успешно получен токен для пользователя {user.username}: {token}")
-                return token
-            else:
-                logger.error("Токен не найден в ответе")
-                return None
+        if token:
+            logger.info(f"✅ Токен успешно получен")
+            return token
         else:
-            logger.error(f"Ошибка получения токена: {response.status_code} - {response.text}")
+            logger.error("❌ Не удалось получить токен")
             return None
             
     except Exception as e:
-        logger.error(f"Ошибка при получении токена пользователя: {str(e)}")
+        logger.error(f"Ошибка при получении токена: {str(e)}")
         return None
 
 # Загружаем типы платежей
@@ -131,7 +91,29 @@ def load_payment_types():
 @app.route('/')
 @login_required
 def index():
-    response = make_response(render_template('index.html'))
+    # Принудительно перезагружаем шаблон
+    from flask import current_app
+    current_app.jinja_env.cache = {}
+    
+    # Принудительно очищаем кэш шаблонов
+    import os
+    template_path = os.path.join(current_app.template_folder, 'index_final.html')
+    if os.path.exists(template_path):
+        os.utime(template_path, None)  # Обновляем время модификации файла
+    
+    response = make_response(render_template('index_final.html'))
+    response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate, private'
+    response.headers['Pragma'] = 'no-cache'
+    response.headers['Expires'] = '0'
+    response.headers['Last-Modified'] = str(int(time.time() * 1000))
+    response.headers['ETag'] = str(int(time.time() * 1000))
+    return response
+
+@app.route('/static/<path:filename>')
+def static_files(filename):
+    """Статические файлы с заголовками против кэширования"""
+    from flask import send_from_directory
+    response = send_from_directory('static', filename)
     response.headers['Cache-Control'] = 'no-cache, no-store, must-revalidate'
     response.headers['Pragma'] = 'no-cache'
     response.headers['Expires'] = '0'
@@ -139,6 +121,7 @@ def index():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    """Авторизация через iiko API"""
     # Если пользователь уже авторизован, перенаправляем на главную
     if current_user.is_authenticated:
         return redirect(url_for('index'))
@@ -146,12 +129,31 @@ def login():
     if request.method == 'POST':
         username = request.form.get('username')
         password = request.form.get('password')
-        user = User.query.filter_by(username=username).first()
         
-        if user and user.check_password(password):
+        if not username or not password:
+            flash('Введите логин и пароль', 'error')
+            return render_template('login.html')
+        
+        # Проверяем авторизацию через iiko API
+        success, token, error = authenticate_with_iiko(username, password)
+        
+        if success:
+            # Вычисляем SHA1 для сохранения в сессии
+            import hashlib
+            password_sha1 = hashlib.sha1(password.encode()).hexdigest()
+            
+            # Создаем объект пользователя
+            user = User(username=username, password_sha1=password_sha1)
+            
+            # Сохраняем в сессию
+            session['username'] = username
+            session['password_sha1'] = password_sha1
+            session.permanent = True  # Сохранять сессию
+            
+            # Логиним через flask-login
             login_user(user)
-            user.last_login = datetime.utcnow()
-            db.session.commit()
+            
+            logger.info(f"✅ Пользователь {username} успешно авторизован через iiko API")
             
             # Перенаправляем на запрошенную страницу или на главную
             next_page = request.args.get('next')
@@ -159,7 +161,8 @@ def login():
                 return redirect(next_page)
             return redirect(url_for('index'))
         else:
-            flash('Неверное имя пользователя или пароль', 'error')
+            logger.warning(f"❌ Неудачная попытка входа для {username}: {error}")
+            flash(f'Ошибка авторизации: {error}', 'error')
     
     return render_template('login.html')
 
@@ -172,99 +175,22 @@ def url_is_safe(url):
 @app.route('/logout')
 @login_required
 def logout():
+    """Выход из системы"""
+    # Очищаем сессию
+    session.pop('username', None)
+    session.pop('password_sha1', None)
     logout_user()
+    logger.info("Пользователь вышел из системы")
     return redirect(url_for('login'))
 
 @app.route('/admin')
 @login_required
 def admin():
-    if not current_user.is_admin:
-        flash('Доступ запрещен', 'error')
-        return redirect(url_for('index'))
-    
-    users = User.query.all()
-    branches = get_branches()
-    return render_template('admin.html', users=users, branches=branches)
+    """Админ панель - пока недоступна, так как нет локальных пользователей"""
+    flash('Админ-панель временно недоступна. Управление пользователями происходит через iiko.', 'info')
+    return redirect(url_for('index'))
 
-@app.route('/admin/users/add', methods=['POST'])
-@login_required
-def add_user():
-    if not current_user.is_admin:
-        return jsonify({"error": "Доступ запрещен"}), 403
-    
-    data = request.json
-    username = data.get('username')
-    password = data.get('password')
-    email = data.get('email')
-    is_admin = data.get('is_admin', False)
-    branches = data.get('branches', [])
-    
-    if User.query.filter_by(username=username).first():
-        return jsonify({"error": "Пользователь с таким именем уже существует"}), 400
-    
-    user = User(username=username, email=email, is_admin=is_admin)
-    user.set_password(password)
-    db.session.add(user)
-    db.session.commit()
-    
-    # Добавляем связи с филиалами
-    for branch in branches:
-        user_branch = UserBranch(
-            user_id=user.id,
-            branch_id=branch['id'],
-            branch_name=branch['name']
-        )
-        db.session.add(user_branch)
-    
-    db.session.commit()
-    return jsonify({"success": True, "message": "Пользователь добавлен"})
-
-@app.route('/admin/users/<int:user_id>/delete', methods=['DELETE'])
-@login_required
-def delete_user(user_id):
-    if not current_user.is_admin:
-        return jsonify({"error": "Доступ запрещен"}), 403
-    
-    if user_id == current_user.id:
-        return jsonify({"error": "Нельзя удалить самого себя"}), 400
-    
-    user = User.query.get_or_404(user_id)
-    db.session.delete(user)
-    db.session.commit()
-    return jsonify({"success": True, "message": "Пользователь удален"})
-
-@app.route('/admin/users/<int:user_id>/toggle', methods=['POST'])
-@login_required
-def toggle_user(user_id):
-    if not current_user.is_admin:
-        return jsonify({"error": "Доступ запрещен"}), 403
-    
-    if user_id == current_user.id:
-        return jsonify({"error": "Нельзя изменить статус самого себя"}), 400
-    
-    user = User.query.get_or_404(user_id)
-    user.is_active = not user.is_active
-    db.session.commit()
-    return jsonify({"success": True, "is_active": user.is_active})
-
-@app.route('/admin/users/<int:user_id>/change-password', methods=['POST'])
-@login_required
-def change_user_password(user_id):
-    if not current_user.is_admin:
-        return jsonify({"error": "Доступ запрещен"}), 403
-    
-    data = request.json
-    new_password = data.get('password')
-    
-    if not new_password:
-        return jsonify({"error": "Пароль не может быть пустым"}), 400
-    
-    user = User.query.get_or_404(user_id)
-    user.set_password(new_password)
-    db.session.commit()
-    
-    logger.info(f"Пароль изменен для пользователя {user.username}")
-    return jsonify({"success": True, "message": "Пароль изменен"})
+# Админ роуты удалены - управление пользователями через iiko
 
 @app.route('/api/branches')
 @login_required
@@ -288,6 +214,10 @@ def api_cash_shifts():
         logger.info(f"Запрос списка кассовых смен для филиала: {branch_id}")
         
         # Используем учетные данные пользователя для получения токена
+        logger.info(f"current_user: {current_user}")
+        logger.info(f"current_user.is_authenticated: {current_user.is_authenticated}")
+        logger.info(f"current_user.username: {getattr(current_user, 'username', 'None')}")
+        
         token = get_user_auth_token(branch_id)
         if not token:
             logger.error("Ошибка аутентификации пользователя")
@@ -757,6 +687,6 @@ def compare_data():
 
 if __name__ == '__main__':
     logger.info("Запуск приложения Cash Shifts")
-    create_admin_user()  # Создаем администратора по умолчанию
+    logger.info("Авторизация через iiko API - локальная БД пользователей не используется")
     app.run(debug=False, host='0.0.0.0', port=5003)
 

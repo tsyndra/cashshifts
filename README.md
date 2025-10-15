@@ -18,6 +18,7 @@
 - **Frontend:** Bootstrap 5, jQuery
 - **База данных:** SQLite
 - **API:** iiko RMS API v2
+- **Тестирование:** Playwright (автоматические E2E тесты)
 
 ## Структура проекта
 
@@ -59,7 +60,7 @@ pip install -r requirements.txt
 python3 app.py
 ```
 
-4. Открыть в браузере: http://localhost:5000
+4. Открыть в браузере: http://localhost:5003
 
 ## Первый вход
 
@@ -108,6 +109,22 @@ BRANCHES = [
 - `GET /api/cash-shift/<session_id>/payments?branch_id=<id>` - получить платежи смены
 - `POST /api/upload-bank-report` - загрузить банковский отчет
 - `POST /api/compare-data` - сравнить данные
+
+## Тестирование
+
+Запуск автоматических тестов:
+```bash
+./run_tests.sh
+```
+
+Подробнее см. `README_TESTING.md`
+
+## Деплой
+
+Автоматический деплой на продакшн:
+```bash
+./deploy_to_production.sh
+```
 
 ## Безопасность
 
